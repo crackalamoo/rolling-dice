@@ -2,8 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from simulation import *
+from animation import *
 
-N_STEPS = 2
+N_STEPS = 10
 
 def update_lines(num, step_arrs, lines):
     for line, steps in zip(lines, step_arrs):
@@ -11,7 +12,7 @@ def update_lines(num, step_arrs, lines):
         line.set_3d_properties(steps[num, 2])
     return lines
 
-dice = [dice_steps(N_STEPS)]
+dice = [draw_dice(N_STEPS)]
 
 fig = plt.figure()
 ax = fig.add_subplot(projection="3d")
