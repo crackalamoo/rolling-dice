@@ -9,7 +9,7 @@ import scipy.integrate as integrate
 
 DICE_SIZE = 0.5
 DICE_MASS = 0.1
-DT = 0.05
+DT = 0.01
 
 I_body = DICE_MASS/12*np.array([
     [2,0,0],
@@ -25,7 +25,7 @@ def star_mult(vec, mat):
     ]) @ mat
 
 def dice_steps(num_steps):
-    start_pos = np.array([0,0,0, 0,0,0]) # x, y, z, px, py, pz
+    start_pos = np.array([0,0,0.8, 0,0,0]) # x, y, z, px, py, pz
     start_rot = np.eye(3)
     start_L = np.array([0,0,0]) # x, y, z
     force = np.array([0,0,-DICE_MASS*9.8])

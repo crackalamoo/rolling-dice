@@ -4,7 +4,8 @@ import matplotlib.animation as animation
 from simulation import *
 from animation import *
 
-N_STEPS = 10
+N_STEPS = 50
+TIME_SCALE = 1.0 # 1.0 is real-time animation speed
 
 def update_lines(num, step_arrs, lines):
     for line, steps in zip(lines, step_arrs):
@@ -25,6 +26,6 @@ ax.set(zlim3d=(0, 1), zlabel='Z')
 ax.set_aspect('equal')
 
 ani = animation.FuncAnimation(
-    fig, update_lines, N_STEPS, fargs=(dice, lines), interval=100)
+    fig, update_lines, N_STEPS, fargs=(dice, lines), interval=DT*1000*TIME_SCALE)
 
 plt.show()
