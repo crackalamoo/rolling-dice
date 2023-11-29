@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
@@ -35,6 +34,6 @@ ax.set(zlim3d=(0, 1), zlabel='Z')
 ax.set_aspect('equal')
 
 ani = animation.FuncAnimation(
-    fig, update_lines, N_STEPS, fargs=(dice, lines, plots), interval=DT*1000*TIME_SCALE)
+    fig, update_lines, N_STEPS, fargs=(dice, lines, plots), interval=DT*1000/TIME_SCALE)
 
 plt.show()
