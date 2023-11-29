@@ -4,7 +4,7 @@ import matplotlib.animation as animation
 from simulation import *
 from animation import *
 
-N_STEPS = 50
+N_STEPS = 200
 TIME_SCALE = 1.0 # 1.0 is real-time animation speed
 
 def update_lines(num, step_arrs, lines):
@@ -13,7 +13,7 @@ def update_lines(num, step_arrs, lines):
         line.set_3d_properties(steps[num, 2])
     return lines
 
-dice = [draw_dice(N_STEPS)]
+dice = draw_dice(N_STEPS, 1)
 
 fig = plt.figure()
 ax = fig.add_subplot(projection="3d")
