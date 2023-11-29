@@ -4,7 +4,7 @@ import matplotlib.animation as animation
 from simulation import *
 from animation import *
 
-N_STEPS = 200
+N_STEPS = 500
 TIME_SCALE = 1.0 # 1.0 is real-time animation speed
 
 def update_lines(num, step_arrs, lines):

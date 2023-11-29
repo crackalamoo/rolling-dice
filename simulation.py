@@ -81,13 +81,13 @@ def dice_steps(num_steps, num_dice):
             if point[2] < 0:
                 contact_points += 1
                 under_floor = max(under_floor, -point[2])
-                impulse_force = np.array([0,0,-point[2]*DICE_MASS*1.6])
+                impulse_force = np.array([0,0,-state[0][5]*1.6])
                 print(angular_impulse)
                 angular_impulse += np.cross(point - x0, impulse_force)
         if contact_points > 0:
             angular_impulse /= contact_points
             new_state[0][2] += under_floor
-            new_state[0][5] -= DICE_MASS*state[0][5]*1.6
+            new_state[0][5] -= state[0][5]*1.6
             new_state[2] += angular_impulse
         # torque *= 0
 
