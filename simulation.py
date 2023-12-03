@@ -13,6 +13,7 @@ DICE_SIZE = 0.5
 DICE_MASS = 0.1
 DT = 0.01
 BOUNCE = 0.0
+COLLISION_EPS = 1e-2
 
 I_body = DICE_MASS/12*np.array([
     [2,0,0],
@@ -75,25 +76,26 @@ def dice_steps(num_steps, num_dice):
         contact_points = 0
         under_floor = 0
         linear_impulse = 0
-        I = new_state[1] @ I_body @ new_state[1].T
-        omega = (np.linalg.inv(I) @ new_state[2].T).T
+        I = state[1] @ I_body @ state[1].T
+        omega = (np.linalg.inv(I) @ state[2].T).T
         lowest_point = -1
         for i in range(len(coords)):
             point = coords[i]
-            if point[2] < 0:
+            if point[2] < COLLISION_EPS:
                 contact_points += 1
                 if -point[2] > under_floor:
                     under_floor = -point[2]
                     lowest_point = i
-                point_momentum = new_state[0][3:] + DICE_MASS*np.cross(omega, point - x0)
+                point_momentum = state[0][3:] + DICE_MASS*np.cross(omega, point - x0)
                 point_impulse = -point_momentum[2] * (1.0+BOUNCE)
                 linear_impulse = max(linear_impulse, point_impulse)
         if contact_points > 0:
-            contact = coords[lowest_point] - x0
-            angular_impulse = np.cross(contact, np.array([0,0,linear_impulse]))
             new_state[0][2] += under_floor
-            new_state[0][5] += linear_impulse
-            new_state[2] += angular_impulse
+            if under_floor > COLLISION_EPS:
+                contact = coords[lowest_point] - x0
+                angular_impulse = np.cross(contact, np.array([0,0,linear_impulse]))
+                new_state[0][5] += linear_impulse
+                new_state[2] += angular_impulse
 
         steps.append(new_state)
         state = new_state
