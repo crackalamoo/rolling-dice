@@ -45,7 +45,8 @@ def dice_steps(num_steps, num_dice):
     start_pos = np.array([2*np.random.random()-1,2*np.random.random()-1,0.8,
                           0,0,0]) # x, y, z, px, py, pz
     start_rot = np.eye(3)
-    start_L = np.array([0.05,0.01,0]) # x, y, z
+    # start_L = np.array([0.05,0.01,0]) # x, y, z
+    start_L = np.array([0,0,0.0])
     force = np.array([0,0,-DICE_MASS*9.8])
     torque = np.array([0,0,0])
     state = (start_pos, start_rot, start_L)
@@ -82,13 +83,17 @@ def dice_steps(num_steps, num_dice):
         for i in range(len(coords)):
             point = coords[i]
             if point[2] < COLLISION_EPS:
-                contact_points += 1
-                if -point[2] > under_floor:
-                    under_floor = -point[2]
-                    lowest_point = i
-                point_momentum = state[0][3:] + DICE_MASS*np.cross(omega, point - x0)
-                point_impulse = -point_momentum[2] * (1.0+BOUNCE)
-                linear_impulse = max(linear_impulse, point_impulse)
+                v_rel = state[0][5]/DICE_MASS + np.cross(omega, point - x0)[2]
+                if v_rel < 0:
+                    contact_points += 1
+                    if -point[2] > under_floor:
+                        under_floor = -point[2]
+                        lowest_point = i
+                        point_impulse = -(1.0+BOUNCE)*v_rel/(1.0/DICE_MASS + np.cross(
+                            np.linalg.inv(I) @ np.cross(point-x0, np.array([0,0,1]).T),
+                            point - x0
+                        ))[2]
+                        linear_impulse = max(linear_impulse, point_impulse)
         if contact_points > 0:
             new_state[0][2] += under_floor
             if under_floor > COLLISION_EPS:
