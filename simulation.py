@@ -44,9 +44,19 @@ def dice_coordinates(x_com, rot):
 def dice_steps(num_steps, num_dice):
     start_pos = np.array([2*np.random.random()-1,2*np.random.random()-1,0.8,
                           0,0,0]) # x, y, z, px, py, pz
-    start_rot = np.eye(3)
-    # start_L = np.array([0.05,0.01,0]) # x, y, z
-    start_L = np.array([0,0,0.0])
+    start_theta = np.random.uniform(0, np.pi/2.0)
+    start_phi = np.random.uniform(0, 2*np.pi)
+    start_rot = np.eye(3) @ np.array([
+        [np.cos(start_theta),-np.sin(start_theta),0],
+        [np.sin(start_theta),np.cos(start_theta),0],
+        [0,0,1]
+    ]) @ np.array([
+        [1,0,0],
+        [0,np.cos(start_phi),-np.sin(start_phi)],
+        [0,np.sin(start_phi),np.cos(start_phi)]
+    ])
+    start_L = np.array([0.05*np.random.random()-0.1,0.02*np.random.random()-0.01,0]) # x, y, z
+    # start_L = np.array([0,0,0.0])
     force = np.array([0,0,-DICE_MASS*9.8])
     torque = np.array([0,0,0])
     state = (start_pos, start_rot, start_L)
