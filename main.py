@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from simulation import *
 from animation import *
 
-N_STEPS = 3700
+N_STEPS = 700
 TIME_SCALE = 1.0 # 1.0 is real-time animation speed
 
 def update_lines(num, step_arrs, lines, plots):
